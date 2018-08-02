@@ -1,0 +1,126 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>${title!}</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="renderer" content="webkit">
+	<link rel="icon" type="image/x-icon" href="/css/img/favicon.ico">
+	<link type="text/css" rel="stylesheet" href="/css/bootstrap.min.css" />
+	<link type="text/css" rel="stylesheet" href="/css/font-awesome.min.css" />
+	<link type="text/css" rel="stylesheet" href="/css/reset.bootstrap.css" />
+	<link type="text/css" rel="stylesheet" href="/css/index.css" />
+	<link rel="stylesheet" type="text/css" href="/js/Validform/Validform.css" />
+	<link rel="stylesheet" type="text/css" href="/css/login.css" />
+	<script type="text/javascript" src="/js/jquery-1.11.3.min.js"></script>
+	<script type="text/javascript" src="/js/bootstrap/bootstrap.min.js"></script>
+	<script type="text/javascript" src="/js/public.js"></script>
+	<script type="text/javascript" src="/js/jquery.form.js"></script>
+	<script type="text/javascript" src="/js/Validform/Validform_v5.3.2_min.js"></script>
+	<script type="text/javascript" src="/js/Validform/validform.public.js"></script>
+	<script type="text/javascript">
+		if (window != top)
+			top.location.href = '/login';
+	</script>
+</head>
+<body>
+	<form class="form1" name="form1" method="post" action="/login/check?ReturnURL=${ReturnURL!}"
+		id="loginform">
+		<div class="login-box " style="clear: both; vertical-align: top;">
+			<table id="lagin" class="login-tb">
+				<caption>${title!}</caption>
+				<tr>
+					<td class="field" colspan="2">
+						<label>用户名：</label>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2">
+						<input type="text" value="${username!}" datatype="*2-30" nullmsg="用户名不能为空" maxlength="30"
+							id="txtUserName" name="username" tabindex="1" class="txtuser" style=“outline:none;”/>
+						<span class="Validform_checktip"></span>
+					</td>
+				</tr>
+				<tr>
+					<td class="field" colspan="2">
+						<label>密 码：</label>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2">
+						<input type="password" maxlength="20" datatype="*6-20" nullmsg="密码不能为空" id="txtPassword" style=“outline:none;”
+							name="password" tabindex="2" class="txtpass" />
+						<span class="Validform_checktip"></span>
+					</td>
+				</tr>
+				<tr>
+					<td class="field" colspan="2">
+						<label>验证码：</label>
+					</td>
+				</tr>
+				<tr>
+					<td style="width: 60%; height: 46px; padding-right: 0;">
+						<input name="safecode_iput" type="text" style=“outline:none;”
+							style="ime-mode: disabled; -webkit-ime-mode: disabled; -moz-ime-mode: disabled; -ms-ime-mode: disabled; width: 100%;"
+							maxlength="4" id="safecode_iput" datatype="*4-4" nullmsg="请输入验证码" tabindex="3"
+							class="textbox_color check validate[required]" />
+					</td>
+					<td style="height: 30px; vertical-align: middle; padding: 0;">
+						<span
+							style="display: inline-block; width: 100px; height: 30px; text-align: left; background: #c0c0c0;">
+							<img src="/login/image" title="点击刷新" alt="验证码"
+								style="position: relative; top: 1px; left: 10px; height: 26px;" id="safecode"
+								onclick="refushcode();" />
+						</span>
+						<span class="Validform_checktip" style="float: left;"></span>
+					</td>
+				</tr>
+				<%if(!isEmpty(msg)){%>
+				<tr>
+					<td style="height: 25px;" colspan="2">
+						<span class="start">${msg!}</span>
+					</td>
+				</tr>
+				<%}%>
+				<tr>
+					<td style="height: 100px;vertical-align: top;padding-top:20px;" colspan="2">
+						<input type="button" class="login-btn" id="btnLogin" value="登 录" style=“outline:none;”/>
+						<a href="/user/getpassword" style="padding-left: 10px; display: none;">忘记密码？</a>
+					</td>
+				</tr>
+			</table>
+			<table class="footer-tb">
+				<tr>
+					<td>
+						版权所有：${title!}
+						<a href="http://static.centbrowser.com/installer_32/centbrowser_2.5.6.57.exe"
+							>下载谷歌浏览器登录系统</a>
+					</td>
+				</tr>
+			</table>
+		</div>
+		<label style="display: none" id="data"> </label>
+	</form>
+	<script type="text/javascript">
+		$(function() {
+			if ($("#loginform").parents(".ui-dialog-body").length > 0) {
+				jumpTo("/login");
+			}
+			$("#btnLogin").click(function() {
+				$("#loginform").submit();
+			});
+			$(document).keydown(function(e) {
+				e = e || event;
+				if (e.keyCode == 13) {
+					$("#btnLogin").click(); //调用登录按钮的登录事件	
+				}
+			});
+		});
+		function refushcode() {
+			var url = "/login/image?t=" + new Date().getTime();
+			document.getElementById("safecode").src = url;
+		}
+	</script>
+</body>
+</html>

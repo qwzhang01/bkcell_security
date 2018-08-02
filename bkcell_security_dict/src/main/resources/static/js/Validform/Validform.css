@@ -1,0 +1,191 @@
+﻿/*
+ * 文件创建人：wk
+ * 创建日期：2013-7-8
+ * 以下样式来自Valiform官网
+ * http://validform.rjboy.cn/
+ */
+/*==========以下部分是提示信息滑入显示的有关样式===========*/
+.Validform_checktip {
+    margin-left: 0;
+}
+
+.info {
+    border: 1px solid #ccc;
+    padding: 2px 20px 2px 5px;
+    color: #666;
+    position: absolute;
+    display: none;
+    line-height: 20px;
+    background-color: #fff;
+}
+
+.dec {
+    bottom: -8px;
+    display: block;
+    height: 8px;
+    overflow: hidden;
+    position: absolute;
+    left: 10px;
+    width: 17px;
+}
+
+.dec s {
+    font-family: simsun;
+    font-size: 16px;
+    height: 19px;
+    left: 0;
+    line-height: 21px;
+    position: absolute;
+    text-decoration: none;
+    top: -9px;
+    width: 17px;
+}
+
+.dec .dec1 {
+    color: #ccc;
+}
+
+.dec .dec2 {
+    color: #fff;
+    top: -10px;
+}
+
+/*==========以下部分是Validform必须的===========*/
+.Validform_checktip {
+    margin-left: 8px;
+    line-height: 20px;
+    height: 20px;
+    overflow: hidden;
+    color: #999;
+    font-size: 12px;
+}
+
+.caoint .Validform_checktip {
+    margin-left: 8px;
+    line-height: 20px;
+    height: 20px;
+    overflow: hidden;
+    color: #999;
+    font-size: 12px;
+}
+
+
+.Validform_right {
+    color: #71b83d;
+    padding-left: 20px;
+    background: url(images/right.png) no-repeat left center;
+}
+
+.Validform_wrong {
+    color: red;
+    padding-left: 20px;
+    white-space: nowrap;
+    background: url(images/error.png) no-repeat left center;
+}
+.caoint .Validform_wrong {
+    background: url("images/error.png") no-repeat scroll left center rgba(0, 0, 0, 0);
+    color: red;
+    padding-left: 20px;
+    white-space: nowrap;
+}
+
+.Validform_loading {
+    padding-left: 20px;
+    background: url(images/onLoad.gif) no-repeat left center;
+}
+
+.Validform_error {
+    /*background-color: #ffe7e7;*/
+    border:1px solid  red;
+}
+
+#Validform_msg {
+    color: #7d8289;
+    font: 12px / 1.5 tahoma, arial, \5b8b\4f53, sans-serif;
+    width: 280px;
+    -webkit-box-shadow: 2px 2px 3px #aaa;
+    -moz-box-shadow: 2px 2px 3px #aaa;
+    background: #fff;
+    position: absolute;
+    top: 0;
+    right: 50px;
+    z-index: 99999;
+    display: none;
+    filter: progid:DXImageTransform.Microsoft.Shadow(Strength=3,Direction=135,Color='#999999');
+    box-shadow: 2px 2px 0 rgba(0,0,0,0.1);
+}
+
+#Validform_msg .iframe {
+    position: absolute;
+    left: 0;
+    top: -1px;
+    z-index: -1;
+}
+
+#Validform_msg .Validform_title {
+    line-height: 25px;
+    height: 25px;
+    text-align: left;
+    font-weight: 700;
+    padding: 0 8px;
+    color: #fff;
+    position: relative;
+    background-color: #999;
+	/**
+    background: 0;
+    background: 0 to(#666));
+    **/
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#999999',endColorstr='#666666');
+}
+
+#Validform_msg a.Validform_close:link,#Validform_msg a.Validform_close:visited {
+    line-height: 22px;
+    position: absolute;
+    right: 8px;
+    top: 0;
+    color: #fff;
+    text-decoration: none;
+}
+
+#Validform_msg a.Validform_close:hover {
+    color: #ccc;
+}
+
+#Validform_msg .Validform_info {
+    padding: 8px;
+    border: 1px solid #bbb;
+    border-top: none;
+    text-align: left;
+}
+
+.passwordStrength {
+}
+
+.passwordStrength b {
+    font-weight: 400;
+}
+
+.passwordStrength b,.passwordStrength span {
+    display: inline-block;
+    vertical-align: middle;
+    line-height: 16px;
+    line-height: 18px;
+    height: 16px;
+}
+
+.passwordStrength span {
+    width: 45px;
+    text-align: center;
+    background-color: #d0d0d0;
+    border-right: 1px solid #fff;
+}
+
+.passwordStrength .last {
+    border-right: none;
+}
+
+.passwordStrength .bgStrength {
+    color: #fff;
+    background-color: #71b83d;
+}
+

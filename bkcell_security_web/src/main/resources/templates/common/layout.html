@@ -1,0 +1,144 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta charset="utf-8">
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="renderer" content="webkit">
+<title>${title!}</title>
+<link rel="icon" type="image/x-icon" href="/css/img/favicon.ico">
+<link type="text/css" rel="stylesheet" href="/css/bootstrap.min.css">
+<link type="text/css" rel="stylesheet" href="/css/font-awesome.min.css">
+<link type="text/css" rel="stylesheet" href="/js/aui-artDialog/css/ui-dialog.css">
+<link type="text/css" rel="stylesheet" href="/js/bootstrap/datetimepicker/css/bootstrap-datetimepicker.min.css">
+<link type="text/css" rel="stylesheet" href="/js/bootstrap/bootstrap_table/css/bootstrap-table.min.css" />
+<link type="text/css" rel="stylesheet" href="/css/reset.bootstrap.css">
+<link type="text/css" rel="stylesheet" href="/css/index.css">
+<link type="text/css" rel="stylesheet" href="/css/common.css">
+${cssPart!}
+</head>
+<body style="overflow: hidden;">
+	<div class="container-fluid" style="margin: 0 auto; padding: 0;">
+		<div id="header" class="header navbar navbar-static-top">
+			<div style="float: left;">
+				<a href="#" class="logo">${title!}</a>
+				
+			</div>
+			<div class="pull-left"><a class="sidebar-toggle" role="button" href="#" data-toggle="offcanvas" >
+			
+				</a></div>
+			<div class="navbar-right">
+				<div class="head-link">
+					<ul class="list-inline ">
+						<li>
+							<i class="fa fa-user fa-lg"></i>
+							${session.fullName!}
+						</li>
+						<li>
+							<a href="#" id="editPsw" onclick="return changepw(this);">
+								<i class="fa fa-edit"></i>
+								&nbsp;修改密码
+							</a>
+						</li>
+						<li>
+							<a href="/login/logout" class="logout">
+								<i class="fa fa-power-off fa-lg"></i>
+								&nbsp;退出
+							</a>
+						</li>
+						<li></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+
+			<% include("/common/_layout_nav.html"){} %>
+
+			<div id="content-box" class="col-lg-10" style="padding: 0 10px 0 10px;">
+				<table class="table table-add">
+					<tr>
+						<td>
+							<h3 class="page-title">${position}</h3>
+						</td>
+					</tr>
+				</table>
+				<div class="panel panel-default" style="overflow-y: auto; overflow-x: hidden;">
+					<div class="panel-body">${layoutContent}</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script type="text/javascript" src="/js/jquery-1.11.3.min.js"></script>
+	<script type="text/javascript" src="/js/jquery.cookie.js"></script>
+	<script type="text/javascript" src="/js/bootstrap/bootstrap.min.js"></script>
+	<script type="text/javascript" src="/js/moment.js"></script>
+	<script type="text/javascript" src="/js/bootstrap/datetimepicker/js/locales/zh-cn.js"></script>
+	<script type="text/javascript" src="/js/bootstrap/datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+	<script type="text/javascript" src="/js/bootstrap/datetimepicker/initDatetimepicker.js"></script>
+	<script type="text/javascript" src="/js/bootstrap/bootstrap_table/js/bootstrap-table.min.js"></script>
+	<script type="text/javascript" src="/js/bootstrap/bootstrap_table/js/locales/bootstrap-table-zh-CN.min.js"></script>
+	<script type="text/javascript" src="/js/bootstrap/bootstrap_table/initBootstrap_table.js?v=2"></script>
+	<script type="text/javascript" src="/js/aui-artDialog/dialog-min.js"></script>
+	<script type="text/javascript" src="/js/artdialog.js?v=1.2"></script>
+	<script type="text/javascript" src="/js/public.js?v=1.5"></script>
+	<!--[if lt IE 9]>
+    <script src="/js/html5shiv.min.js"></script>
+    <script src="/js/respond.js"></script>
+    <![endif]-->
+	${jsPart!}
+	<script type="text/javascript">
+		$(function() {
+			layoutResize();
+			$(window).resize(function() {
+				layoutResize();
+			});
+
+			if ("${session.toUpdatePwd}" == "true") {
+				artdialog.addOrEditNOCancel({
+					url : $("#editPsw").attr("href"),
+					title : "修改密码",
+					width : 600,
+					height : 260
+				});
+				artdialog.msg({
+					title : "提示信息",
+					content : "您的密码过于简单，为了您的账号安全，请您立即修改密码。",
+					width : 350,
+					height : 60,
+					time : 2000
+				});
+				return false;
+			}
+		});
+
+		$(".menu-nav li a i").click(function() {
+			$(this).find("ul").toggle();
+		});
+		// 左侧菜单状态，js + 后端 + cookie方式（新）
+		$('.sidebar-toggle').click(function(){
+			var xxljob_adminlte_settings = $.cookie('xxljob_adminlte_settings');	// 左侧菜单展开状态[xxljob_adminlte_settings]：on=展开，off=折叠
+			if ('off' == xxljob_adminlte_settings) {
+	            xxljob_adminlte_settings = 'on';
+			} else {
+	            xxljob_adminlte_settings = 'off';
+			}
+			$.cookie('xxljob_adminlte_settings', xxljob_adminlte_settings, { expires: 7 });	//$.cookie('the_cookie', '', { expires: -1 });
+		});
+	</script>
+	<%if(isNotEmpty(msg)){%>
+	<script type="text/javascript">
+		artdialog.msg({
+			title : "提示信息",
+			content : "${msg}",
+			width : 300,
+			height : 60,
+			time : 2000
+		});
+	</script>
+	<%}%>
+</body>
+</html>

@@ -1,0 +1,53 @@
+<form class="form1" action="/changepw/save" method="post" name="form2" id="formChangePw">
+	<table class="common-form">
+		<tr>
+			<td><span style="color: red">*</span>请输入当前密码：</td>
+			<td class="clearfix td-right"><input type="password" maxlength="20" datatype="*6-20"
+				nullmsg="密码不能为空" name="oldPw" tabindex="2" class="form-control txtpass"
+				ajaxurl="/validpwd" style="width: 65%; display: inline;" /> <span class="Validform_checktip"></span></td>
+		</tr>
+		<tr>
+			<td><span style="color: red">*</span>请输入新密码：</td>
+			<td class="clearfix td-right"><input class="form-control" type="password"
+				name="newPw" datatype="*6-20" nullmsg="请输入新密码！" errormsg="密码范围在6~20位之间！"
+				style="width: 65%; display: inline;" /> <span class="Validform_checktip"></span></td>
+		</tr>
+		<tr>
+			<td><span style="color: red">*</span>请再次输入新密码：</td>
+			<td class="clearfix td-right"><input class="form-control" type="password"
+				name="cfPw" recheck="newPw" datatype="*6-20" nullmsg="请再次输入新密码！"
+				errormsg="两次输入的密码不一致！" style="width: 65%; display: inline;" /><span class="Validform_checktip"></span></td>
+		</tr>
+	</table>
+	<input id="submit" type="submit" value="保存" style="display: none;">
+</form>
+<script type="text/javascript" src="/js/Validform/Validform_v5.3.2_min.js"></script>
+<script type="text/javascript" src="/js/Validform/validform.public.js"></script>
+<script type="text/javascript" src="/js/underscore.js"></script>
+<script type="text/javascript" src="/js/jquery.form.js"></script>
+<link rel="stylesheet" type="text/css" href="/js/Validform/Validform.css" />
+<script type="text/javascript">
+	$(function() {
+		$("#submit").click(function(e) {
+			e.preventDefault();		
+			if ($('#formChangePw').Validform().check()) {
+				$(this).prop("disabled",true);
+				$('#formChangePw').ajaxSubmit(function(d) {
+					artdialog.msg({
+						title : "提示信息",
+						width : 200,
+						height : 60,
+						content : d.msg,
+						onremove:function(){
+							if(0 == d.code){
+								window.location.href="/login/logout";
+							}else{
+								$(this).prop("disabled",false);
+							}
+						}
+					});
+				});
+			}
+		});
+	});
+</script>

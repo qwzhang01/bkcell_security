@@ -1,0 +1,37 @@
+<%var jsPart={%>
+<script type="text/javascript">
+    var $listTabId = $("#searchTable");
+    $(function () {
+        initPageList($listTabId, {
+            url: "/param/code/list",
+            queryParams: function (params) {
+                return $('#form1').serializeJson(params);
+            }
+        });
+        //搜索
+        $("#btnSearch").click(function () {
+            $listTabId.bootstrapTable('getOptions').pageNumber = 1;
+            $listTabId.bootstrapTable('refresh');
+        });
+        bindEnterKey("#btnSearch");
+    });
+</script>
+<%};%> <%layout("/common/layout.html",{position:"用户管理", jsPart:jsPart}){%>
+<div class="row">
+    <form id="form1" class="add-margin-bottom" role="search">
+    </form>
+</div>
+<div class="page-wrap">
+    <table id="searchTable">
+        <thead>
+        <tr>
+            <th data-formatter="indexNum" data-title="序号" data-width="3%" data-align="center"></th>
+            <th data-field="code" class="table-title">参数编码</th>
+            <th data-field="remark" class="table-title">参数类型</th>
+            <th data-field="type" class="table-title">类别编码</th>
+            <th data-field="name" class="table-title">参数名称</th>
+        </tr>
+        </thead>
+    </table>
+</div>
+<%}%>

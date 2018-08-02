@@ -1,0 +1,103 @@
+<%var jsPart={%>
+<script type="text/javascript">
+	var $listTabId = $("#searchTable");
+	$(function() {
+		initPageList($listTabId, {
+			url : "/system/role/list",
+			queryParams : function(params) {
+				return $('#form1').serializeJson(params);
+			}
+		});
+		//搜索
+		$("#btnSearch").click(function() {
+			$listTabId.bootstrapTable('getOptions').pageNumber = 1;
+			$listTabId.bootstrapTable('refresh');
+		});
+		//新增
+		$("#btnAdd").click(function() {
+			artdialog.addOrEdit({
+				url : "/system/role/form", 
+				title : "新增角色",
+				width :618
+			});
+			return false;
+		});
+		bindEnterKey("#btnSearch");
+	});
+	
+	
+	//编辑弹出触发
+	function editRole(t) {
+		var id = $(t).attr("Id");
+		artdialog.addOrEdit({
+			url : "/system/role/form?roleId=" + id ,
+			title : "编辑角色",
+			width :618
+		});
+		return false;
+	}
+
+	function operate(value, item, index) {
+		var operation = "";
+		<%if(ShiroMethod.hasPermission("角色管理-分配权限")){%>
+		operation += '<a href="#"  data-id="'
+				+ item.RoleId
+				+ '" data-name="'
+				+ item.RoleName
+				+ '" onclick="assginrole(this)">分配权限</a> ';
+		<%}%>
+		<%if(ShiroMethod.hasPermission("角色管理-编辑")){%>
+			operation += '<a href="#" Id="' + item.RoleId + '"onclick="editRole(this)">编辑</a> ';
+		<%}%>	
+		return operation;
+	}
+	function assginrole(t) {
+		var roleId = $(t).data("id");
+		var roleName = $(t).data("name");
+	    console.log(roleId);
+		artdialog.addOrEdit({
+			url : "/system/role/assign/" + roleId,
+			title : roleName + "-分配权限",
+			width : 800,
+			height : 400
+		});
+	}
+</script>
+<%};%> <%var cssPart={%>
+<style type="text/css">
+
+</style>
+<%};%> <%layout("/common/layout.html",{position:"角色管理", jsPart:jsPart, cssPart:cssPart}){%>
+<div class="row">
+	 <form id="form1" class="add-margin-bottom" role="search" onsubmit="return false">
+		<ul class="form-inline client-list-search">
+	 	<li>
+			<label>角色名：</label>
+			<input type="text" class="form-control" name="searchKey"  placeholder="角色名称" />
+		</li>
+		<li class="operator">
+		<button type="button" id="btnSearch" class="btn btn-success">
+			<i class="fa fa-search"></i> 搜索
+		</button>
+		<%if(ShiroMethod.hasPermission("角色管理-新增")){%>
+		<button type="button" id="btnAdd" class="btn btn-success">
+			<i class="fa fa-plus-circle"></i>新增
+		</button>
+		<%}%>
+	   </li>
+	  </ul>
+	</form>
+</div>
+<div class="page-wrap">
+	<table id="searchTable">
+	<thead>
+		<tr>
+			<th data-formatter="indexNum"data-width="3%" data-align="center">序号</th>
+			<th data-field="RoleName" class="table-title" width="18%;">角色名</th>
+			<th data-field="Description" class="table-title" width="37%;">备注</th>
+			<th data-formatter="operate" data-align="center">操作</th>
+		</tr>
+	</thead>
+	</table>
+</div>
+<%}%>

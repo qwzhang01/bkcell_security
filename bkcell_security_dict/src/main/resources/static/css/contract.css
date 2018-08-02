@@ -1,0 +1,32 @@
+stylesheet@CHARSET "UTF-8";
+.contract-tb{
+	width: 700px;
+	border:none;
+	margin:10px auto 10px auto;
+}
+.contract-tb caption {
+	height: 70px;
+	line-height: 70px;
+	font-size:22px;
+	font-weight:bold;
+	font-family:"microsfot yahei";
+	text-align: center;
+}
+.contract-tb td{
+	height:40px;
+	font-size:14px;
+	font-family:"microsfot yahei";
+	vertical-align:bottom;
+    text-align:left;
+	padding:10px;
+}
+.contract-tb td p{
+	line-height:32px;
+	vertical-align:bottom;
+	font-family:"microsfot yahei";
+	text-indent: 2em;
+}
+.contract-tb td input{
+	border: none;
+	border-bottom:1px solid #aaa;
+}

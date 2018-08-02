@@ -1,0 +1,123 @@
+<link rel="stylesheet" type="text/css" href="/js/Validform/Validform.css" />
+
+<form class="form1" action="/system/role/assign/save" method="post" name="form2" id="form2">
+	<%include("/common/_form_token.html"){}%>
+	<input type="hidden" name="roleid" value="${roleId!}">
+	<div class="page-wrap">
+		<table id="per_searchTable">
+			<thead>
+			<tr>
+				<th data-checkbox="true" data-width="5%"></th>
+				<th data-formatter="indexNum" data-title="" data-align="center" data-width="5%"></th>
+				<th data-formatter="columsName" data-title="栏目名称" data-width="35%"></th>
+				<th data-formatter="permissionDetail" data-title="权限名称"></th>
+			</tr>
+			</thead>
+		</table>
+	</div>
+	<input id="submit" type="submit" value="保存" style="display: none;">
+	<input type="hidden" id="data" style="display: none"></input>
+</form>
+
+<script type="text/javascript" src="/js/jquery.form.js"></script>
+<script type="text/javascript" src="/js/Validform/Validform_v5.3.2_min.js"></script>
+<script type="text/javascript" src="/js/Validform/validform.public.js"></script>
+
+<script type="text/javascript">
+    var $per_listTabId = $("#per_searchTable");
+    $(function () {
+        initPageList($per_listTabId, {
+            url : "/system/role/permissions/${roleId}",
+            pagination: false,
+            sidePagination: 'client',
+            onCheckAll: function(rows){
+                $('input[name="permissionId"]').each(function(){
+                    $(this).prop("checked", true);
+                });
+            },
+            onUncheckAll: function(rows){
+                $('input[name="permissionId"]').each(function(){
+                    $(this).prop("checked", false);
+                });
+            },
+            onCheck: function(row, $element){
+                $element.parent().parent().find('input[name="permissionId"]').each(function(){
+                    $(this).prop("checked", true);
+                });
+            },
+            onUncheck: function(row, $element){
+                $element.parent().parent().find('input[name="permissionId"]').each(function(){
+                    $(this).prop("checked", false);
+                });
+            },
+            onPostBody:function(data){
+                initCheck();
+            }
+        });
+
+        $("#submit").click(function() {
+            if ($('#form2').Validform().check(false)) {
+                $('#form2').ajaxSubmit(function(data) {
+                    $("#data").val(data.code == 0);
+                    artdialog.msg({
+                        title : "提示信息",
+                        width : 200,
+                        height : 60,
+                        onremove : callFn,
+                        content : data.msg
+                    });
+                });
+            }
+            return false;
+        });
+        var callFn = function() {
+            var flag = $("#data").val();
+            if (flag == "true") {
+                var url = "/system/role";
+                jumpTo(url);
+            } else {
+                resetFormAndClearValidate("#form2");
+            }
+        }
+    });
+
+    function initCheck(){
+        $("#per_searchTable tbody tr").each(function() {
+            var index = $(this).children('td').eq(0).children('input').attr("data-index");
+            if(typeof(index)!="undefined"){
+                var checked = $(this).find(":checkbox[name='permissionId']").not("input:checked").length == 0;
+                if(checked){
+                    $(this).children('td').eq(0).children('input').prop("checked", true);
+                }else{
+                    $(this).children('td').eq(0).children('input').prop("checked", false);
+                }
+            }
+        });
+        var iChecked = $("#per_searchTable").find(":checkbox[name='btSelectItem']").not("input:checked").length == 0;
+        if(iChecked){
+            $('input[name="btSelectAll"]').prop("checked", true);
+        }else{
+            $('input[name="btSelectAll"]').prop("checked", false);
+        }
+    }
+
+    function columsName(value, item, index){
+        return item.menu + '-' + item.subMenu
+    }
+
+    function permissionDetail(value, item, index){
+        var perdetail = item.permissionDetail;
+        var ps = perdetail.split(',');
+        var html = "";
+        for (var i = 0; i < ps.length; i++) {
+            var pTip = ps[i].split('|');
+            html += '<label class="permissions-list"> <input type="checkbox" name="permissionId" value="'
+                + pTip[1] + '"';
+            if (parseInt(pTip[2]) == 1) {
+                html += ' checked="checked" ';
+            }
+            html += ' onchange="initCheck(this)" >' + pTip[0]  + "</label>";
+        }
+        return html;
+    }
+</script>

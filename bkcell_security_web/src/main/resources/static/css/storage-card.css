@@ -1,0 +1,96 @@
+body {
+	margin: 0 auto;
+}
+/* clearfix */
+.clearfix:before, .clearfix:after {
+    content:"";
+    display:table;
+}
+.clearfix:after{
+	clear:both;
+	overflow:hidden;
+}
+.clearfix{
+    zoom:1;
+}
+
+.storage-card-bg {
+	display: block; 
+	width : 980px;
+	height:680px;
+	background: url(img/storage-card-bg.png) no-repeat;
+	background-size:980px auto;
+	margin: 20px auto;
+}
+.storage-card-bg2{
+	/*widht:160mm;*/
+	height:247mm;
+	background:url(img/storage-logo.png)no-repeat center center;
+	overflow: hidden;
+}
+.storage-card-bg .left,.storage-card-bg .right{
+	width:50%;
+}
+.storage-card-bg .left{
+	float:left;
+}
+
+.storage-card-bg .right{
+	float:right;
+}
+.storage-card-bg table{
+	position:relative;
+	top:150px; 
+	width:360px;
+	border:1px solid #333;
+	border-collapse: collapse;
+
+}
+.storage-card-bg table.tb-l{
+	left:100px;
+}
+.storage-card-bg table.tb-r{
+	left:30px;
+}
+
+.storage-card-bg2 table{
+	position:relative;
+	top:0;
+	left:0;
+	width:94%;
+	margin:8mm auto;
+}
+.storage-card-bg table td{
+	font-size:13px;
+    font-family:"黑体";
+    text-align:left;
+	padding:16px 4px;
+	border:1px solid #333;
+}
+.storage-card-bg2 table td{
+	text-align: center;
+	font-size:16px;
+}
+.storage-card-bg2 table td.field{
+	font-weight: bold;
+}
+.storage-card-bg table.tb-l td{
+	text-align: center;
+	padding:16px 0;
+}
+.seal-location{
+	position:relative;
+	top:-205mm;
+	left:126mm;
+	width:4.0cm;
+	height:4.0cm;
+	background: url(img/seal.png) no-repeat right center;
+	background-size:4cm 4cm;
+}
+caption {
+	height:60px;
+	font-size:24px;
+	font-weight:bold;
+	color:#000;
+	text-align: center;
+}

@@ -1,0 +1,36 @@
+<div id="menu-box" class=" col-lg-2 navbar-collapse" style="padding-left: 0; padding-right: 0; overflow-y: auto !important;">
+    <%var current=current!"";%>
+    <ul class="nav menu-nav">
+        <li ${current== "default"?"class='current'"}>
+        <a href="/">
+            <span class="left"><i class="fa fa-home"></i>系统首页</span>
+            <span class="right"><i class="fa fa-angle-right fa-lg"></i></span>
+        </a>
+        </li>
+        <%for(levelOne in nav()){%>
+        <%if(ShiroMethod.hasPermission(levelOne.menuName)){%>
+            <li ${array.contain(levelOne.childMenuControllerAb, current)? 'class="current"' : ''} >
+                <a href="${levelOne.menuHref!}">
+                    <span class="left"><i class="${levelOne.menuIcon!}"></i>${levelOne.menuName!}</span>
+                    <%if(isNotEmpty(levelOne.childMenu)){%>
+                    <span class="right"><i class="fa fa-angle-right fa-lg"></i></span>
+                    <%}%>
+                </a>
+                <%if(isNotEmpty(levelOne.childMenu)){%>
+                <ul class="sub-menu">
+                    <%for(levelTwo in levelOne.childMenu){%>
+                    <%if(ShiroMethod.hasPermission(levelTwo.menuName)){%>
+                    <li ${current==levelTwo.menuControllerAb! ?'class="current"' : ''}>
+                        <i class="fa fa-circle-o"></i>
+                        <a href="${levelTwo.menuHref!}">${levelTwo.menuName!}</a>
+                    </li>
+                    <%}%>
+                    <%}%>
+                </ul>
+                <%}%>
+        </li>
+        <%}%>
+        <%}%>
+    </ul>
+</div>
+

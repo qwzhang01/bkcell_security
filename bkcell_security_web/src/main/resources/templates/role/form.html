@@ -1,0 +1,59 @@
+<link rel="stylesheet" type="text/css" href="/js/Validform/Validform.css" />
+<form class="form1" action="/system/role/save" method="post" name="form2" id="form2">
+	<%include("/common/_form_token.html"){}%>
+	<input type="hidden" name="roleid" value="${role.roleid!}">
+	<table class="common-form">
+		<tr>
+			<td class="field" style="width: 20%"><span style="color: red">*</span>角色名：</td>
+			<td class="form-inline">
+				<input id="role" type="text" name="rolename" class="form-control"
+					value="${role.rolename!}" maxlength="50" datatype="*" nullmsg="请填写角色名称！"
+					ajaxurl="/system/role/valid/${role.roleid!0}" />
+				<span class="Validform_checktip"></span>
+			</td>
+		</tr>
+		<tr>
+			<td class="field">备注：</td>
+			<td colspan="3">
+				<textarea name="description" class="form-control" rows="3" style="width: 85%;">${role.description!}</textarea>
+			</td>
+		</tr>
+	</table>
+	<input id="submit" type="button" value="保存" style="display: none;">
+	<input type="hidden" id="data" style="display: none" />
+</form>
+<script type="text/javascript" src="/js/jquery.form.js"></script>
+<script type="text/javascript" src="/js/Validform/Validform_v5.3.2_min.js"></script>
+<script type="text/javascript" src="/js/Validform/validform.public.js"></script>
+<script type="text/javascript">
+	$(function() {
+		$("#submit").click(function() {
+			var a = $("#role")[0].validform_valid;
+			if (a != "true" && a != null) {
+				return false;
+			}
+			if ($('#form2').Validform().check(false)) {
+				$('#form2').ajaxSubmit(function(data) {
+					$("#data").val(data.code == 0);
+					artdialog.msg({
+						title : "提示信息",
+						width : 200,
+						height : 60,
+						onremove : callFn,
+						content : data.msg
+					});
+				});
+			}
+			return false;
+		});
+		var callFn = function() {
+			var flag = $("#data").val();
+			if (flag == "true") {
+				var url = "/system/role";
+				jumpTo(url);
+			} else {
+				resetFormAndClearValidate("#form1");
+			}
+		}
+	})
+</script>

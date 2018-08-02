@@ -1,0 +1,99 @@
+<%var cssPart={%>
+<link rel="stylesheet" type="text/css" href="/js/Validform/Validform.css"/>
+<%};%> <%var jsPart={%>
+<script type="text/javascript" src="/js/jquery.form.js"></script>
+<script type="text/javascript" src="/js/Validform/Validform_v5.3.2_min.js"></script>
+<script type="text/javascript" src="/js/Validform/validform.public.js"></script>
+<script type="text/javascript">
+    $(function () {
+        $("#btnSave").click(function () {
+            var a = $("#userName")[0].validform_valid;
+            if (a != "true" && a != null) {
+                return false;
+            }
+            if ($('#form1').Validform().check(false) & IsChecked()) {
+                $('#form1').ajaxSubmit(function (data) {
+                    $("#data").val(data.code == 0);
+                    artdialog.msg({
+                        title: "提示信息",
+                        width: 200,
+                        height: 60,
+                        onremove: callFn,
+                        content: data.msg
+                    });
+                });
+            }
+            return false;
+        });
+        var callFn = function () {
+            var flag = $("#data").val();
+            if (flag == "true") {
+                var url = "/system/user";
+                jumpTo(url);
+            } else {
+                resetFormAndClearValidate("#form1");
+            }
+        }
+    });
+    function IsChecked() {
+        var checked = true;
+        if ($("input[name='roleId']:checked").length < 1) {
+            $("#checkRole").empty().addClass("Validform_wrong").removeClass(
+                "Validform_right").append("请选择用户角色。");
+            checked = false;
+        } else {
+            $("#checkRole").empty().addClass("Validform_right").removeClass(
+                "Validform_wrong");
+        }
+        return checked;
+    }
+</script>
+<%};%><%layout("/common/layout.html",{position:"用户管理", jsPart:jsPart, cssPart:cssPart}){%>
+<form class="form1" action="/system/user/save" method="post" name="form1" id="form1">
+    <div class="reset-btn-box">
+        <button type="button" id="btnSave" value="" class="btn btn-success">
+            <i class=" fa fa-save"></i>保 存
+        </button>
+    </div>
+    <%include("/common/_form_token.html"){}%>
+    <input type="hidden" id="hidUserId" name="userid" value="${user.userid!}"/>
+
+    <table class="common-form">
+        <tr>
+            <td style="width: 17%;" class="field"><span style="color: red">*</span>用户名</td>
+            <td style="width: 33%;" class="form-inline">
+                <input type="text" class="form-control" id="userName" name="username" value="${user.username!}"
+                    datatype="*2-14" ajaxurl="/system/user/valid/${user.userid!0}" nullmsg="请输入用户名！"/>
+                <span class="Validform_checktip"></span></td>
+            <td style="width: 17%;" class="field"><span style="color: red">*</span>真实姓名</td>
+            <td class="form-inline">
+                <input type="text" class="form-control" id="fullName" name="realname" value="${user.realname!}"
+                       datatype="*2-14" nullmsg="请输入姓名！"/>
+                <span class="Validform_checktip"></span></td>
+        </tr>
+        <tr>
+            <td class="field"><span style="color: red">*</span>联系方式</td>
+            <td colspan="3" class="form-inline">
+                <input type="text" class="form-control" id="Mobile" name="phonenum" value="${user.phonenum!}"
+                    datatype="m" errormsg="手机号码格式不正确！" nullmsg="请输入手机号码！"/>
+                <span class="Validform_checktip"></span></td>
+        </tr>
+        <tr>
+            <td class="field"><span style="color: red">*</span>角 色</td>
+            <td colspan="3" class="form-inline">
+                <div style="float: left; width: 98%; line-height: 26px;" id="roleCheck">
+                    <%for(role in roles!){%>
+                    <div style="width: 20%; float: left;">
+                        <label><input type="checkbox" class="cbRole" name="roleId" value="${role.RoleId!}"
+                               onblur="IsChecked()" ${1==role.HasRole!?"checked='checked' "} /> ${role.RoleName}
+                        </label>
+                    </div>
+                    <%if(roleLP.index%5==0){%><br><%}%><%}%>
+                </div>
+                <span id="checkRole" class="Validform_checktip"></span>
+            </td>
+        </tr>
+    </table>
+    <input type="hidden" id="data" style="display: none"/>
+</form>
+<%}%>

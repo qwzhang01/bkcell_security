@@ -1,0 +1,98 @@
+<%var jsPart={%>
+<script type="text/javascript">
+    var $listTabId = $("#searchTable");
+    $(function () {
+        initPageList($listTabId, {
+            url: "/system/user/list",
+            queryParams: function (params) {
+                return $('#form1').serializeJson(params);
+            }
+        });
+        //搜索
+        $("#btnSearch").click(function () {
+            $listTabId.bootstrapTable('getOptions').pageNumber = 1;
+            $listTabId.bootstrapTable('refresh');
+        });
+        bindEnterKey("#btnSearch");
+    });
+
+    function getIdSelections() {
+        return $.map($listTabId.bootstrapTable('getSelections'), function (row) {
+            return row.id
+        });
+    }
+
+    function operate(value, item, index) {
+        var operation = "";
+        <% if (ShiroMethod.hasPermission("用户管理-编辑")) {%>
+            operation += '<a href="/system/user/form?userId=' + item.UserId + '">编辑</a> ';
+        <%}if (ShiroMethod.hasPermission("用户管理-重置密码")) {%>
+            operation += '<a href="#" data="' + item.UserId + '" onclick="initpw(this)">重置密码</a> ';
+        <%}if (ShiroMethod.hasPermission("用户管理-删除")) {%>
+            operation += '<a href="#" data="' + item.UserId + '" onclick="del(this)">删除</a> ';
+        <%}%>
+        return operation;
+    }
+
+    function initpw(t) {
+        var id = $(t).attr("data");
+        artdialog.confirmLink({
+            url: "/system/user/initpw/" + id,
+            title: "信息确认",
+            content: "你确定要重置该用户密码吗？",
+            width: 300
+        });
+    }
+
+    function del(t) {
+        var id = $(t).attr("data");
+        artdialog.confirmLink({
+            url: "/system/user/delete/" + id,
+            title: "信息确认",
+            content: "你确定要删除该用户吗？",
+            width: 300
+        });
+    }
+</script>
+<%};%> <%layout("/common/layout.html",{position:"用户管理", jsPart:jsPart}){%>
+<div class="row">
+    <form id="form1" class="add-margin-bottom" role="search">
+        <ul class="form-inline client-list-search">
+            <li><label>关键字：</label>
+                <input type="text" placeholder="用户名、姓名、联系方式" class="form-control" name="searchKey"></li>
+            <li><label>角色：</label> <select name="roleId" class="form-control" style="width: 98%;">
+                <option value="">请选择角色</option>
+                <%if(has(roles)){for(role in roles){%>
+                <option value="${role.RoleId}">${role.RoleName}</option>
+                <%}}%>
+            </select></li>
+
+            <li class="operator">
+                <button type="button" id="btnSearch" class="btn btn-success">
+                    <i class="fa fa-search"></i>搜索
+                </button>
+                <%if(ShiroMethod.hasPermission("用户管理-新增")){%>
+                <a href="/system/user/form" class="btn btn-success">
+                    <i class="fa fa-plus-circle"></i>新增
+                </a>
+                <%}%>
+            </li>
+        </ul>
+    </form>
+</div>
+<div class="page-wrap">
+    <table id="searchTable">
+        <thead>
+        <tr>
+            <th data-formatter="indexNum" data-width="3%" data-align="center">序号</th>
+            <th data-field="UserName" data-width="15%">用户名</th>
+            <th data-field="RealName" data-width="15%">姓名</th>
+            <th data-field="PhoneNum">联系方式</th>
+            <th data-field="OrgName">所属组织</th>
+            <th data-field="RoleName">角色</th>
+            <th data-formatter="operate" data-width="16%" data-align="center">操作</th>
+        </tr>
+        </thead>
+    </table>
+</div>
+<%}%>
